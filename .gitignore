@@ -1,0 +1,13 @@
+images
+build
+target
+*.class
+*.iml
+*.ipr
+*.jpg
+.idea
+.gradle
+.classpath
+.settings
+.project
+.DS_Store
