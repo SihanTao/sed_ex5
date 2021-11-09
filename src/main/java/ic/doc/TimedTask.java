@@ -3,16 +3,16 @@ package ic.doc;
 import java.util.concurrent.Callable;
 
 public class TimedTask implements Callable<Long> {
-  private final Delay delay;
+  private final Runnable runnable;
 
-  public TimedTask(Delay delay) {
-    this.delay = delay;
+  public TimedTask(Delay runnable) {
+    this.runnable = runnable;
   }
 
   @Override
   public Long call() throws Exception {
     long start_time = System.currentTimeMillis();
-    delay.run();
+    runnable.run();
     long end_time = System.currentTimeMillis();
     return end_time - start_time;
   }
