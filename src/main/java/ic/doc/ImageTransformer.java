@@ -9,9 +9,13 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
@@ -24,29 +28,10 @@ public class ImageTransformer {
     this.downloadDirectory = downloadDirectory;
   }
 
-  public void transform(List<Transform> filesToTransform) throws IOException, InterruptedException {
-
-    cleanTransformedDirectory(downloadDirectory);
-
-    long startTime = System.currentTimeMillis();
-
-    ExecutorService executorService = Executors.newFixedThreadPool(5);
-
-    for (Transform toTransform : filesToTransform) {
-      executorService.submit(new ImageTransformTask(downloadDirectory, toTransform.targetFilename()));
-    }
-
-    executorService.shutdown();
-    executorService.awaitTermination(120, TimeUnit.SECONDS);
-
-    long endTime = System.currentTimeMillis();
-
-    System.out.printf("Total runtime: %dms%n", endTime - startTime);
-  }
-
   private static void cleanTransformedDirectory(Path path) {
     File dir = new File(path.toString());
-    FileFilter fileFilter = new WildcardFileFilter("*" + TRANSFORMED_FILE_SUFFIX, IOCase.INSENSITIVE);
+    FileFilter fileFilter = new WildcardFileFilter("*" + TRANSFORMED_FILE_SUFFIX,
+        IOCase.INSENSITIVE);
     File[] fileList = dir.listFiles(fileFilter);
 
     if (fileList != null) {
@@ -73,5 +58,38 @@ public class ImageTransformer {
     }
 
     new ImageTransformer(downloadDirectory).transform(imagesToTransform);
+  }
+
+  public void transform(List<Transform> filesToTransform)
+      throws IOException, InterruptedException, ExecutionException {
+
+    cleanTransformedDirectory(downloadDirectory);
+
+    long startTime = System.currentTimeMillis();
+
+    ExecutorService executorService = Executors.newFixedThreadPool(5);
+
+    List<Future<Long>> futures = new ArrayList<>();
+    Map<Future<Long>, String> futureFilenameHashMap = new HashMap<>();
+
+    for (Transform toTransform : filesToTransform) {
+      Future<Long> future = executorService.submit(
+          new TimedTask(new ImageTransformTask(downloadDirectory, toTransform.targetFilename())));
+      futures.add(future);
+      futureFilenameHashMap.put(future, toTransform.targetFilename());
+    }
+
+    executorService.shutdown();
+
+    for (Future<Long> future : futures) {
+      String filename = futureFilenameHashMap.get(future);
+      System.out.printf("%s processing Time: %dms%n", filename, future.get());
+    }
+
+    executorService.awaitTermination(120, TimeUnit.SECONDS);
+
+    long endTime = System.currentTimeMillis();
+
+    System.out.printf("Total runtime: %dms%n", endTime - startTime);
   }
 }
