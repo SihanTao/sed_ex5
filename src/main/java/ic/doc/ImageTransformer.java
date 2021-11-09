@@ -1,15 +1,20 @@
 package ic.doc;
 
+import static ic.doc.ImageTransformTask.TRANSFORMED_FILE_SUFFIX;
 import static ic.doc.Transform.TransformFrom;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOCase;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 public class ImageTransformer {
 
@@ -20,6 +25,8 @@ public class ImageTransformer {
   }
 
   public void transform(List<Transform> filesToTransform) throws IOException, InterruptedException {
+
+    cleanTransformedDirectory(downloadDirectory);
 
     long startTime = System.currentTimeMillis();
 
@@ -37,17 +44,33 @@ public class ImageTransformer {
     System.out.printf("Total runtime: %dms%n", endTime - startTime);
   }
 
+  private static void cleanTransformedDirectory(Path path) {
+    File dir = new File(path.toString());
+    FileFilter fileFilter = new WildcardFileFilter("*" + TRANSFORMED_FILE_SUFFIX, IOCase.INSENSITIVE);
+    File[] fileList = dir.listFiles(fileFilter);
+
+    if (fileList != null) {
+      for (File file : fileList) {
+        file.delete();
+      }
+    }
+  }
+
   public static void main(String[] args) throws Exception {
 
     Path downloadDirectory = Paths.get("").resolve("images");
 
-    List<Transform> imagesToTransform = List.of(
-        TransformFrom("stata_centre.jpg"),
-        TransformFrom("frog.jpg"),
-        TransformFrom("eggs.jpg"),
-        TransformFrom("moth.jpg"),
-        TransformFrom("trace.jpg")
-    );
+    cleanTransformedDirectory(downloadDirectory);
+    File dir = new File(downloadDirectory.toString());
+    FileFilter fileFilter = new WildcardFileFilter("*.JPG", IOCase.INSENSITIVE);
+    File[] fileList = dir.listFiles(fileFilter);
+
+    List<Transform> imagesToTransform = new ArrayList<>();
+    if (fileList != null) {
+      for (File file : fileList) {
+        imagesToTransform.add(TransformFrom(file.getName()));
+      }
+    }
 
     new ImageTransformer(downloadDirectory).transform(imagesToTransform);
   }
