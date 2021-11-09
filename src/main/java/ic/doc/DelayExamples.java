@@ -38,6 +38,7 @@ public class DelayExamples {
     for (Future<Long> future : futures) {
       totalProcessingTime += future.get();
     }
+    executorService.awaitTermination(120, SECONDS);
     long endTime = System.currentTimeMillis();
 
     long elapsedTime = endTime - startTime;
