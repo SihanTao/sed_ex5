@@ -14,22 +14,30 @@ public class TransformTask implements Runnable {
   public static final String TRANSFORMED_FILE_SUFFIX = "-filtered-small.jpg";
   private final Path directory;
   private final String filename;
-  private final CountDownLatch latch;
+  private final CountDownLatch downloadLatch;
 
-  public TransformTask(Path directory, String filename, CountDownLatch latch) {
+  public TransformTask(Path directory, String filename, CountDownLatch downloadLatch) {
     this.directory = directory;
     this.filename = filename;
-    this.latch = latch;
+    this.downloadLatch = downloadLatch;
   }
 
   public TransformTask(Path directory, String filename) {
     this.directory = directory;
     this.filename = filename;
-    this.latch = null;
+    this.downloadLatch = null;
   }
 
   @Override
   public void run() {
+    if (downloadLatch != null) {
+      try {
+        downloadLatch.await();
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+
     System.out.println("Started transforming " + filename);
     try {
 
@@ -50,6 +58,5 @@ public class TransformTask implements Runnable {
     }
 
     System.out.println("Finished transforming " + filename);
-    latch.countDown();
   }
 }

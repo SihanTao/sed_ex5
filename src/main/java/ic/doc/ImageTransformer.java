@@ -76,12 +76,11 @@ public class ImageTransformer {
     CountDownLatch latch = new CountDownLatch(filesToTransform.size());
     for (Transform toTransform : filesToTransform) {
       Future<Long> future = executorService.submit(
-          new TimedTask(new TransformTask(downloadDirectory, toTransform.targetFilename(), latch)));
+          new TimedTask(new TransformTask(downloadDirectory, toTransform.targetFilename())));
       futures.add(future);
       futureFilenameHashMap.put(future, toTransform.targetFilename());
     }
 
-    latch.await();
     executorService.shutdown();
 
     for (Future<Long> future : futures) {
