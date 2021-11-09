@@ -5,7 +5,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class DownloadTask {
+public class DownloadTask implements Runnable {
 
   private final URL url;
   private final Path downloadDirectory;
@@ -17,7 +17,8 @@ public class DownloadTask {
     this.filename = filename;
   }
 
-  public void download() {
+  @Override
+  public void run() {
     System.out.println("Started downloading " + filename);
     try {
       Path filePath = downloadDirectory.resolve(filename);

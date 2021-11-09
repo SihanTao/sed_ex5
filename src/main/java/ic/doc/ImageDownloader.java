@@ -1,5 +1,9 @@
 package ic.doc;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
@@ -18,15 +22,20 @@ public class ImageDownloader {
     this.downloadDirectory = downloadDirectory;
   }
 
-  public void download(List<Download> filesToFetch) throws IOException {
+  public void download(List<Download> filesToFetch) throws IOException, InterruptedException {
 
     cleanDownloadDirectory();
 
     long startTime = System.currentTimeMillis();
 
+    ExecutorService executorService = Executors.newFixedThreadPool(3);
+
     for (Download toDownload : filesToFetch) {
-      new DownloadTask(toDownload.url(), downloadDirectory, toDownload.targetFilename()).download();
+      executorService.submit(new DownloadTask(toDownload.url(), downloadDirectory, toDownload.targetFilename()));
     }
+
+    executorService.shutdown();
+    executorService.awaitTermination(180, TimeUnit.SECONDS);
 
     long endTime = System.currentTimeMillis();
 
