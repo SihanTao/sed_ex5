@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 public class TimedTask implements Callable<Long> {
   private final Runnable runnable;
 
-  public TimedTask(Delay runnable) {
+  public TimedTask(Runnable runnable) {
     this.runnable = runnable;
   }
 
