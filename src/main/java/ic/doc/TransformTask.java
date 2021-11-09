@@ -8,13 +8,13 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class ImageTransformTask implements Runnable {
+public class TransformTask implements Runnable {
 
   public static final String TRANSFORMED_FILE_SUFFIX = "-filtered-small.jpg";
   private final Path directory;
   private final String filename;
 
-  public ImageTransformTask(Path directory, String filename) {
+  public TransformTask(Path directory, String filename) {
     this.directory = directory;
     this.filename = filename;
   }
