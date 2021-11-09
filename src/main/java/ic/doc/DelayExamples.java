@@ -1,6 +1,8 @@
 package ic.doc;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -19,12 +21,16 @@ public class DelayExamples {
             Delay.of(4, SECONDS)
     );
 
+    ExecutorService executorService = Executors.newFixedThreadPool(8);
+
     long startTime = System.currentTimeMillis();
 
     for (Delay delay : delays) {
-      delay.run();
+      executorService.submit(delay);
     }
 
+    executorService.shutdown();
+    executorService.awaitTermination(120, SECONDS);
     long endTime = System.currentTimeMillis();
 
     long elapsedTime = endTime - startTime;
