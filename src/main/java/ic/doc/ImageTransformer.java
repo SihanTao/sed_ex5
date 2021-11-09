@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -72,13 +73,15 @@ public class ImageTransformer {
     List<Future<Long>> futures = new ArrayList<>();
     Map<Future<Long>, String> futureFilenameHashMap = new HashMap<>();
 
+    CountDownLatch latch = new CountDownLatch(filesToTransform.size());
     for (Transform toTransform : filesToTransform) {
       Future<Long> future = executorService.submit(
-          new TimedTask(new TransformTask(downloadDirectory, toTransform.targetFilename())));
+          new TimedTask(new TransformTask(downloadDirectory, toTransform.targetFilename(), latch)));
       futures.add(future);
       futureFilenameHashMap.put(future, toTransform.targetFilename());
     }
 
+    latch.await();
     executorService.shutdown();
 
     for (Future<Long> future : futures) {

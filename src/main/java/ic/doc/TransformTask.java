@@ -1,6 +1,7 @@
 package ic.doc;
 
 import com.jhlabs.image.KaleidoscopeFilter;
+import java.util.concurrent.CountDownLatch;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
@@ -13,10 +14,12 @@ public class TransformTask implements Runnable {
   public static final String TRANSFORMED_FILE_SUFFIX = "-filtered-small.jpg";
   private final Path directory;
   private final String filename;
+  private final CountDownLatch latch;
 
-  public TransformTask(Path directory, String filename) {
+  public TransformTask(Path directory, String filename, CountDownLatch latch) {
     this.directory = directory;
     this.filename = filename;
+    this.latch = latch;
   }
 
   @Override
@@ -41,5 +44,6 @@ public class TransformTask implements Runnable {
     }
 
     System.out.println("Finished transforming " + filename);
+    latch.countDown();
   }
 }
