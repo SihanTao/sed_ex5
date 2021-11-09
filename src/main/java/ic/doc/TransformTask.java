@@ -22,6 +22,12 @@ public class TransformTask implements Runnable {
     this.latch = latch;
   }
 
+  public TransformTask(Path directory, String filename) {
+    this.directory = directory;
+    this.filename = filename;
+    this.latch = null;
+  }
+
   @Override
   public void run() {
     System.out.println("Started transforming " + filename);
