@@ -63,6 +63,7 @@ public class ImageDownloader {
     }
 
     latch.await();
+    executorService.shutdown();
     executorService.awaitTermination(120, TimeUnit.SECONDS);
 
     long endTime = System.currentTimeMillis();

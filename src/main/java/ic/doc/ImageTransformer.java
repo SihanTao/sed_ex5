@@ -1,6 +1,6 @@
 package ic.doc;
 
-import static ic.doc.ImageTransformTask.TRANSFORMED_FILE_SUFFIX;
+import static ic.doc.TransformTask.TRANSFORMED_FILE_SUFFIX;
 import static ic.doc.Transform.TransformFrom;
 
 import java.io.File;
@@ -74,7 +74,7 @@ public class ImageTransformer {
 
     for (Transform toTransform : filesToTransform) {
       Future<Long> future = executorService.submit(
-          new TimedTask(new ImageTransformTask(downloadDirectory, toTransform.targetFilename())));
+          new TimedTask(new TransformTask(downloadDirectory, toTransform.targetFilename())));
       futures.add(future);
       futureFilenameHashMap.put(future, toTransform.targetFilename());
     }
