@@ -38,7 +38,7 @@ public class ImageDownloaderTest {
 
     Set<String> downloadedNames =
             Set.of(downloadDir.toFile().list(
-                    (dir, name) -> !name.endsWith(ImageTransformTask.TRANSFORMED_FILE_SUFFIX)));
+                    (dir, name) -> !name.endsWith(TransformTask.TRANSFORMED_FILE_SUFFIX)));
 
     assertThat(downloadedNames, is(equalTo(expectedNames)));
   }
