@@ -23,7 +23,7 @@ public class DelayExamples {
         Delay.of(4, SECONDS)
     );
 
-    ExecutorService executorService = Executors.newFixedThreadPool(6);
+    ExecutorService executorService = Executors.newFixedThreadPool(2);
 
     long startTime = System.currentTimeMillis();
 
