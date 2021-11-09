@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class ImageTransformTask {
+public class ImageTransformTask implements Runnable {
 
   public static final String TRANSFORMED_FILE_SUFFIX = "-filtered-small.jpg";
   private final Path directory;
@@ -19,7 +19,8 @@ public class ImageTransformTask {
     this.filename = filename;
   }
 
-  public void transform() {
+  @Override
+  public void run() {
     System.out.println("Started transforming " + filename);
     try {
 

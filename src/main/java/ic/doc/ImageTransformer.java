@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.FileUtils;
 
 public class ImageTransformer {
@@ -20,20 +23,18 @@ public class ImageTransformer {
 
     long startTime = System.currentTimeMillis();
 
+    ExecutorService executorService = Executors.newFixedThreadPool(5);
+
     for (Transform toTransform : filesToTransform) {
-      new ImageTransformTask(downloadDirectory, toTransform.targetFilename()).transform();
+      executorService.submit(new ImageTransformTask(downloadDirectory, toTransform.targetFilename()));
     }
+
+    executorService.shutdown();
+    executorService.awaitTermination(120, TimeUnit.SECONDS);
 
     long endTime = System.currentTimeMillis();
 
     System.out.printf("Total runtime: %dms%n", endTime - startTime);
-  }
-
-  private void cleanDownloadDirectory() throws IOException {
-    boolean downloadDirectoryExists = !downloadDirectory.toFile().mkdir();
-    if (downloadDirectoryExists) {
-      FileUtils.cleanDirectory(downloadDirectory.toFile());
-    }
   }
 
   public static void main(String[] args) throws Exception {

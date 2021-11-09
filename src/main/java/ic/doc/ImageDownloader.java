@@ -28,7 +28,7 @@ public class ImageDownloader {
 
     long startTime = System.currentTimeMillis();
 
-    ExecutorService executorService = Executors.newFixedThreadPool(3);
+    ExecutorService executorService = Executors.newFixedThreadPool(5);
 
     for (Download toDownload : filesToFetch) {
       executorService.submit(new DownloadTask(toDownload.url(), downloadDirectory, toDownload.targetFilename()));
