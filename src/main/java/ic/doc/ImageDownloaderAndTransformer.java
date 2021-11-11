@@ -2,6 +2,8 @@ package ic.doc;
 
 import static ic.doc.Download.fetchFrom;
 
+import ic.doc.Task.DownloadTask;
+import ic.doc.Task.TransformTask;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;

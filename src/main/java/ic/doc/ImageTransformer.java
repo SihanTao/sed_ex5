@@ -1,8 +1,10 @@
 package ic.doc;
 
-import static ic.doc.TransformTask.TRANSFORMED_FILE_SUFFIX;
+import static ic.doc.Task.TransformTask.TRANSFORMED_FILE_SUFFIX;
 import static ic.doc.Transform.TransformFrom;
 
+import ic.doc.Task.TimedTask;
+import ic.doc.Task.TransformTask;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;

@@ -1,8 +1,9 @@
-package ic.doc;
+package ic.doc.Task;
 
 import java.util.concurrent.Callable;
 
 public class TimedTask implements Callable<Long> {
+
   private final Runnable runnable;
 
   public TimedTask(Runnable runnable) {

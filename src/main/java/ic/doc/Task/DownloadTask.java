@@ -1,5 +1,6 @@
-package ic.doc;
+package ic.doc.Task;
 
+import ic.doc.DownloadException;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;

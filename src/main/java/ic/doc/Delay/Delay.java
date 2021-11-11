@@ -1,4 +1,4 @@
-package ic.doc;
+package ic.doc.Delay;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,7 +24,7 @@ public class Delay implements Runnable {
   public void run() {
     try {
       System.out.println(
-              String.format("Sleeping for %d %s", duration, timeUnit.toString().toLowerCase()));
+          String.format("Sleeping for %d %s", duration, timeUnit.toString().toLowerCase()));
       Thread.sleep(timeUnit.toMillis(duration));
     } catch (InterruptedException e) {
       throw new RuntimeException(e);

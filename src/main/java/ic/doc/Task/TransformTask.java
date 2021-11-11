@@ -1,13 +1,13 @@
-package ic.doc;
+package ic.doc.Task;
 
 import com.jhlabs.image.KaleidoscopeFilter;
-import java.util.concurrent.CountDownLatch;
-import org.imgscalr.Scalr;
-
-import javax.imageio.ImageIO;
+import ic.doc.ImageTransformException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.concurrent.CountDownLatch;
+import javax.imageio.ImageIO;
+import org.imgscalr.Scalr;
 
 public class TransformTask implements Runnable {
 

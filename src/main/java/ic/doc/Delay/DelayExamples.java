@@ -1,7 +1,8 @@
-package ic.doc;
+package ic.doc.Delay;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+import ic.doc.Task.TimedTask;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
