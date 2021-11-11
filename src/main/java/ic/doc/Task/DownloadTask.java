@@ -1,5 +1,6 @@
 package ic.doc.Task;
 
+import ic.doc.CatchingRunnable;
 import ic.doc.DownloadException;
 import java.io.IOException;
 import java.net.URL;
@@ -16,6 +17,7 @@ public class DownloadTask implements Runnable {
 
   public DownloadTask(URL url, Path downloadDirectory, String filename,
       CountDownLatch latch) {
+    super();
     this.url = url;
     this.downloadDirectory = downloadDirectory;
     this.filename = filename;
@@ -30,10 +32,11 @@ public class DownloadTask implements Runnable {
       Files.copy(url.openStream(), filePath);
     } catch (IOException e) {
       throw new DownloadException(e);
+    } finally {
+      latch.countDown();
     }
     System.out.println("Finished downloading " + filename);
 
-    latch.countDown();
   }
 
 }

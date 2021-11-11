@@ -41,7 +41,10 @@ public class ImageDownloader {
             "moth.jpg"),
         fetchFrom(new URL(
                 "https://upload.wikimedia.org/wikipedia/commons/8/83/Lissajous-Figur_--_2020_--_7766.jpg"),
-            "trace.jpg")
+            "trace.jpg"),
+        fetchFrom(new URL(
+                "http://http://nosuchhost.doc.ic.ac.uk/not-here.jpg"),
+            "exception.jpg")
     );
 
     new ImageDownloader(downloadDirectory).download(imagesToFetch);
@@ -58,14 +61,22 @@ public class ImageDownloader {
     ExecutorService executorService = Executors.newFixedThreadPool(5);
 
     for (Download toDownload : filesToFetch) {
-      executorService
-          .submit(new DownloadTask(toDownload.url(), downloadDirectory, toDownload.targetFilename(),
+      CatchingRunnable catchingRunnable = new CatchingRunnable(
+          new DownloadTask(toDownload.url(), downloadDirectory, toDownload.targetFilename(),
               latch));
+      executorService
+          .submit(catchingRunnable);
     }
 
-    latch.await();
     executorService.shutdown();
-    executorService.awaitTermination(120, TimeUnit.SECONDS);
+    try {
+      latch.await();
+      executorService.awaitTermination(120, TimeUnit.SECONDS);
+    } catch (DownloadException e) {
+      System.out.println(e.getMessage());
+      throw e;
+    }
+
 
     long endTime = System.currentTimeMillis();
 
