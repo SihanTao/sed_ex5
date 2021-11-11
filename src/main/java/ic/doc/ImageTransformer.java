@@ -64,7 +64,7 @@ public class ImageTransformer {
   }
 
   public void transform(List<Transform> filesToTransform)
-      throws IOException, InterruptedException, ExecutionException {
+      throws InterruptedException, ExecutionException {
 
     cleanTransformedDirectory(downloadDirectory);
 

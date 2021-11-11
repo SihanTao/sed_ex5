@@ -9,6 +9,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.Test;
@@ -37,8 +38,8 @@ public class ImageDownloaderTest {
             .collect(Collectors.toSet());
 
     Set<String> downloadedNames =
-        Set.of(downloadDir.toFile().list(
-            (dir, name) -> !name.endsWith(TransformTask.TRANSFORMED_FILE_SUFFIX)));
+        Set.of(Objects.requireNonNull(downloadDir.toFile().list(
+            (dir, name) -> !name.endsWith(TransformTask.TRANSFORMED_FILE_SUFFIX))));
 
     assertThat(downloadedNames, is(equalTo(expectedNames)));
   }

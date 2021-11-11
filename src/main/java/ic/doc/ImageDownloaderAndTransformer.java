@@ -78,7 +78,12 @@ public class ImageDownloaderAndTransformer {
     }
 
     executorService.shutdown();
-    executorService.awaitTermination(120, TimeUnit.SECONDS);
+    try{
+      executorService.awaitTermination(120, TimeUnit.SECONDS);
+    } catch (RuntimeException e) {
+      System.out.println(e.getMessage());
+      throw e;
+    }
 
     long endTime = System.currentTimeMillis();
 

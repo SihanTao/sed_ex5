@@ -11,9 +11,14 @@ public class TimedTask implements Callable<Long> {
   }
 
   @Override
-  public Long call() throws Exception {
+  public Long call() {
     long start_time = System.currentTimeMillis();
-    runnable.run();
+    try {
+      runnable.run();
+    } catch (RuntimeException e) {
+      System.out.println(e.getMessage());
+      throw e;
+    }
     long end_time = System.currentTimeMillis();
     return end_time - start_time;
   }

@@ -77,7 +77,6 @@ public class ImageDownloader {
       throw e;
     }
 
-
     long endTime = System.currentTimeMillis();
 
     System.out.printf("Total runtime: %dms%n", endTime - startTime);
