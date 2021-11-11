@@ -7,7 +7,6 @@ import ic.doc.Task.TimedTask;
 import ic.doc.Task.TransformTask;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -86,11 +85,19 @@ public class ImageTransformer {
     executorService.shutdown();
 
     for (Future<Long> future : futures) {
-      String filename = futureFilenameHashMap.get(future);
-      System.out.printf("%s processing Time: %dms%n", filename, future.get());
+      try {
+        String filename = futureFilenameHashMap.get(future);
+        System.out.printf("%s processing Time: %dms%n", filename, future.get());
+      } catch (TransformException e) {
+        e.printStackTrace();
+      }
     }
 
-    executorService.awaitTermination(120, TimeUnit.SECONDS);
+    try {
+      executorService.awaitTermination(120, TimeUnit.SECONDS);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
 
     long endTime = System.currentTimeMillis();
 
