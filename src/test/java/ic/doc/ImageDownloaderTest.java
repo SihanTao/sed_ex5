@@ -4,7 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import ic.doc.Task.TransformTask;
+import ic.doc.task.TransformTask;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;

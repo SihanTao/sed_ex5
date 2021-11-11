@@ -1,6 +1,5 @@
-package ic.doc.Task;
+package ic.doc.task;
 
-import ic.doc.CatchingRunnable;
 import ic.doc.DownloadException;
 import java.io.IOException;
 import java.net.URL;

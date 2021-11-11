@@ -1,4 +1,4 @@
-package ic.doc.Task;
+package ic.doc.task;
 
 import java.util.concurrent.Callable;
 
@@ -12,14 +12,14 @@ public class TimedTask implements Callable<Long> {
 
   @Override
   public Long call() {
-    long start_time = System.currentTimeMillis();
+    long startTime = System.currentTimeMillis();
     try {
       runnable.run();
     } catch (RuntimeException e) {
       System.out.println(e.getMessage());
       throw e;
     }
-    long end_time = System.currentTimeMillis();
-    return end_time - start_time;
+    long endTime = System.currentTimeMillis();
+    return endTime - startTime;
   }
 }

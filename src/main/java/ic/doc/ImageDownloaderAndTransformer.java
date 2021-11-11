@@ -2,8 +2,8 @@ package ic.doc;
 
 import static ic.doc.Download.fetchFrom;
 
-import ic.doc.Task.DownloadTask;
-import ic.doc.Task.TransformTask;
+import ic.doc.task.DownloadTask;
+import ic.doc.task.TransformTask;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -59,7 +59,7 @@ public class ImageDownloaderAndTransformer {
 
     cleanDownloadDirectory();
 
-    long startTime = System.currentTimeMillis();
+    final long startTime = System.currentTimeMillis();
 
     CountDownLatch[] latches = new CountDownLatch[filesToFetch.size()];
     for (int i = 0; i < latches.length; i++) {
@@ -78,14 +78,14 @@ public class ImageDownloaderAndTransformer {
     }
 
     executorService.shutdown();
-    try{
+    try {
       executorService.awaitTermination(120, TimeUnit.SECONDS);
     } catch (RuntimeException e) {
       System.out.println(e.getMessage());
       throw e;
     }
 
-    long endTime = System.currentTimeMillis();
+    final long endTime = System.currentTimeMillis();
 
     System.out.printf("Total runtime: %dms%n", endTime - startTime);
   }

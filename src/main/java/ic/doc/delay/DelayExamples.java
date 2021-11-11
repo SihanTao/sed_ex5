@@ -1,8 +1,8 @@
-package ic.doc.Delay;
+package ic.doc.delay;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-import ic.doc.Task.TimedTask;
+import ic.doc.task.TimedTask;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -26,7 +26,7 @@ public class DelayExamples {
 
     ExecutorService executorService = Executors.newFixedThreadPool(2);
 
-    long startTime = System.currentTimeMillis();
+    final long startTime = System.currentTimeMillis();
 
     List<Future<Long>> futures = new ArrayList<>();
     for (Delay delay : delays) {
@@ -40,7 +40,7 @@ public class DelayExamples {
       totalProcessingTime += future.get();
     }
     executorService.awaitTermination(120, SECONDS);
-    long endTime = System.currentTimeMillis();
+    final long endTime = System.currentTimeMillis();
 
     long elapsedTime = endTime - startTime;
     System.out.printf("Total processing time: %dms%n", totalProcessingTime);

@@ -1,4 +1,4 @@
-package ic.doc.Delay;
+package ic.doc.delay;
 
 import java.util.concurrent.TimeUnit;
 

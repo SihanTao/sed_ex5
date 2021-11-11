@@ -1,10 +1,10 @@
 package ic.doc;
 
-import static ic.doc.Task.TransformTask.TRANSFORMED_FILE_SUFFIX;
-import static ic.doc.Transform.TransformFrom;
+import static ic.doc.task.TransformTask.TRANSFORMED_FILE_SUFFIX;
+import static ic.doc.Transform.transformFrom;
 
-import ic.doc.Task.TimedTask;
-import ic.doc.Task.TransformTask;
+import ic.doc.task.TimedTask;
+import ic.doc.task.TransformTask;
 import java.io.File;
 import java.io.FileFilter;
 import java.nio.file.Path;
@@ -55,7 +55,7 @@ public class ImageTransformer {
     List<Transform> imagesToTransform = new ArrayList<>();
     if (fileList != null) {
       for (File file : fileList) {
-        imagesToTransform.add(TransformFrom(file.getName()));
+        imagesToTransform.add(transformFrom(file.getName()));
       }
     }
 
@@ -67,7 +67,7 @@ public class ImageTransformer {
 
     cleanTransformedDirectory(downloadDirectory);
 
-    long startTime = System.currentTimeMillis();
+    final long startTime = System.currentTimeMillis();
 
     ExecutorService executorService = Executors.newFixedThreadPool(5);
 
@@ -99,7 +99,7 @@ public class ImageTransformer {
       e.printStackTrace();
     }
 
-    long endTime = System.currentTimeMillis();
+    final long endTime = System.currentTimeMillis();
 
     System.out.printf("Total runtime: %dms%n", endTime - startTime);
   }

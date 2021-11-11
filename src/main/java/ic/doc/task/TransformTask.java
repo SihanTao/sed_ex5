@@ -1,4 +1,4 @@
-package ic.doc.Task;
+package ic.doc.task;
 
 import com.jhlabs.image.KaleidoscopeFilter;
 import ic.doc.ImageTransformException;
